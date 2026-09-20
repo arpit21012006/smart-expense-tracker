@@ -1,47 +1,19 @@
 💰 Smart Expense Tracker
 
-A web-based Smart Expense Tracker built using Python, Flask, SQLite, HTML, CSS and JavaScript.
+A web-based Smart Expense Tracker built with Python, Flask, PostgreSQL, HTML, CSS, and JavaScript.
 
-The application helps users record, manage and analyze their daily expenses while providing budget tracking and smart spending insights.
+The application helps users record, manage, search, analyze, and monitor their daily expenses. It also provides budget tracking, spending insights, monthly analytics, spending prediction, unusual-spending detection, CSV export, and a modern responsive dashboard.
 
 🌐 Live Demo
 
-🚀 Live Application:
+Live Website:
 https://smart-expense-tracker-1s4s.onrender.com
 
 📌 Project Overview
 
-Managing daily expenses manually can make it difficult to understand where money is being spent.
+Managing daily expenses manually can make it difficult to understand spending patterns and stay within a budget.
 
-The Smart Expense Tracker provides a simple dashboard where users can:
-
-Add daily expenses
-
-Categorize expenses
-
-Edit and delete expenses
-
-Search and filter expenses
-
-Set a personal budget
-
-Track total spending
-
-Monitor remaining budget
-
-View spending insights
-
-Detect unusually high expenses
-
-Estimate future spending
-
-Export expense data as CSV
-
-The project is developed as a B.Tech CSE project with the goal of combining web development, database management and intelligent expense analysis.
-
-✨ Features
-
-🧾 Expense Management
+The Smart Expense Tracker solves this problem by providing a centralized web application where users can:
 
 Add new expenses
 
@@ -49,65 +21,123 @@ Edit existing expenses
 
 Delete expenses
 
-Store expense name, amount, category and date
+Search and filter transactions
 
-View all recorded expenses
+Set and update a monthly/overall budget
 
-🔎 Search & Filtering
+View total and monthly spending
 
-Search expenses by name
+Analyze category-wise spending
 
-Filter expenses by category
+View spending charts
 
-Sort expenses by latest entries
+Receive smart spending insights
 
-💵 Budget Management
+Get a simple next-month spending prediction
 
-Set monthly/personal budget
+Detect unusually high expenses
 
-Calculate total spending
+Export expense records as CSV
 
-Calculate remaining budget
+Switch between light and dark mode
 
-Display budget warnings
+🎯 Objectives
 
-Detect when the budget is exceeded
+The main objectives of the project are:
 
-🧠 Smart Spending Insights
+To develop a simple and user-friendly expense management application.
 
-The application analyzes spending data and provides useful insights such as:
+To store and manage expense records in a relational database.
 
-Highest spending category
+To provide budget monitoring and spending analysis.
 
-Percentage of spending by category
+To visualize spending patterns using charts.
 
-Budget usage warnings
+To provide basic smart insights from recorded expense data.
 
-Spending pattern analysis
+To deploy the application online for real-world accessibility.
 
-Unusual/high-value expense detection
+✨ Features
 
-Estimated future spending
+1. Add Expense
 
-📊 Expense Analytics
+Users can add an expense with:
 
-The system maintains:
+Expense name
 
-Category-wise spending
+Amount
 
-Monthly spending
+Category
 
-Total expenses
+The application automatically records the current date.
 
-Current-month expenses
+2. Edit Expense
+
+Existing expense records can be edited through the edit page.
+
+3. Delete Expense
+
+Users can delete unwanted expense records with a confirmation step.
+
+4. Search & Filter
+
+Expenses can be searched by name and filtered by category.
+
+5. Budget Management
+
+Users can set a budget and monitor:
+
+Total spending
 
 Remaining budget
 
-📥 Export
+Budget status
 
-Users can export their expense records as a CSV file for further analysis or record keeping.
+The dashboard displays warnings when spending approaches or exceeds the budget.
 
-🛠️ Technology Stack
+6. Smart Spending Insight
+
+The application analyzes category distribution and budget usage to generate a simple spending insight.
+
+7. Spending Prediction
+
+The application calculates an average of recorded monthly spending and uses it as a basic estimated next-month expense.
+
+8. Unusual Spending Detection
+
+The system identifies expenses that are significantly higher than the average spending, helping users notice potentially unusual transactions.
+
+9. Monthly Analytics
+
+Monthly expense totals are visualized using a line chart and a bar chart.
+
+10. Category Analytics
+
+Category-wise expense distribution is shown using a doughnut chart and progress bars.
+
+11. CSV Export
+
+All recorded expenses can be downloaded as:
+
+expense_report.csv
+
+12. Responsive Professional UI
+
+The dashboard is designed for desktop and mobile screens and includes:
+
+Sidebar navigation
+
+Dashboard summary cards
+
+Responsive tables
+
+Responsive charts
+
+Light/Dark mode
+
+Modern fintech-style layout
+
+🛠️ Tech Stack
 
 Frontend
 
@@ -117,6 +147,8 @@ CSS3
 
 JavaScript
 
+Chart.js
+
 Backend
 
 Python
@@ -125,19 +157,43 @@ Flask
 
 Database
 
-SQLite
+PostgreSQL for the deployed Render application
+
+SQLite database retained locally as a backup/development database
 
 Deployment
 
 Render
 
-Gunicorn
-
 Version Control
 
-Git
-
 GitHub
+
+GitHub Desktop
+
+🏗️ System Architecture
+
+                    ┌──────────────────────┐
+                    │      User / Browser  │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │ HTML + CSS + JS      │
+                    │ Chart.js Dashboard   │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │ Flask Web Application │
+                    │       app.py         │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │ PostgreSQL Database  │
+                    │      on Render       │
+                    └──────────────────────┘
 
 📂 Project Structure
 
@@ -145,54 +201,210 @@ smart-expense-tracker/
 │
 ├── app.py
 ├── requirements.txt
+├── README.md
 ├── expenses.db
 │
-├── templates/
-│   ├── index.html
-│   ├── edit.html
-│   └── error.html
-│
-└── README.md
+└── templates/
+    ├── index.html
+    ├── edit.html
+    └── error.html
 
-⚙️ Installation & Setup
+File Description
+
+File / Folder
+
+Purpose
+
+app.py
+
+Flask backend, routes, database logic, analytics and smart features
+
+requirements.txt
+
+Python dependencies
+
+README.md
+
+Project documentation
+
+expenses.db
+
+Local SQLite backup/development database
+
+templates/index.html
+
+Main dashboard UI
+
+templates/edit.html
+
+Expense editing page
+
+templates/error.html
+
+Error display page
+
+🗃️ Database Design
+
+expenses table
+
+Column
+
+Description
+
+id
+
+Unique expense ID
+
+name
+
+Expense name
+
+amount
+
+Expense amount
+
+category
+
+Expense category
+
+expense_date
+
+Date of the expense
+
+settings table
+
+Column
+
+Description
+
+id
+
+Settings record ID
+
+budget
+
+Current budget value
+
+🔌 Main Flask Routes
+
+Route
+
+Method
+
+Purpose
+
+/
+
+GET
+
+Dashboard, search, filter, analytics
+
+/add
+
+POST
+
+Add expense
+
+/edit/<id>
+
+GET
+
+Open expense edit page
+
+/update/<id>
+
+POST
+
+Update expense
+
+/delete/<id>
+
+GET
+
+Delete expense
+
+/set-budget
+
+POST
+
+Update budget
+
+/export
+
+GET
+
+Export expenses as CSV
+
+🧠 Smart Features
+
+The project includes simple rule/statistics-based smart features.
+
+Smart Insight Logic
+
+The application considers:
+
+Budget usage
+
+Total spending
+
+Highest spending category
+
+Category percentage of total spending
+
+Based on these values, it displays a user-friendly spending message.
+
+Spending Prediction Logic
+
+The current implementation uses:
+
+Predicted Expense
+=
+Average of recorded monthly expense totals
+
+This is a basic statistical estimation, not a machine-learning model.
+
+Unusual Spending Logic
+
+The application checks whether an expense is both:
+
+At least ₹1000
+
+More than twice the average expense
+
+Such transactions are shown in the unusual/high-spending section.
+
+💻 Local Setup
 
 1. Clone the repository
 
 git clone https://github.com/arpit21012006/smart-expense-tracker.git
-
-2. Navigate to the project directory
-
 cd smart-expense-tracker
 
-3. Create a virtual environment
+2. Create a virtual environment
+
+Windows:
 
 python -m venv venv
 
-4. Activate the virtual environment
-
-Windows
+Activate it:
 
 venv\Scripts\activate
 
-Linux / macOS
-
-source venv/bin/activate
-
-5. Install dependencies
+3. Install dependencies
 
 pip install -r requirements.txt
 
-6. Run the application
+4. Run the application
 
 python app.py
 
-The application will be available at:
+The local application will normally be available at:
 
 http://127.0.0.1:5000
 
-🚀 Deployment
+☁️ Render Deployment
 
-The application is deployed using Render.
+The deployed application runs on Render.
 
 Build Command
 
@@ -202,138 +414,166 @@ Start Command
 
 gunicorn app:app
 
-🗄️ Database
+Environment Variable
 
-The project currently uses SQLite.
+The deployed Flask application uses:
 
-The database contains tables for:
+DATABASE_URL
 
-Expenses
+This variable contains the PostgreSQL connection string configured in Render.
 
-Stores:
+The database connection string should never be committed to GitHub.
 
-Expense ID
+🔄 SQLite to PostgreSQL Migration
 
-Expense name
+During development, the application used SQLite.
 
-Amount
+For deployment, the database was migrated to PostgreSQL on Render.
 
-Category
+Migration flow:
 
-Expense date
+Local SQLite
+     ↓
+expenses.db
+     ↓
+Migration Script
+     ↓
+Render PostgreSQL
+     ↓
+DATABASE_URL
+     ↓
+Flask Application
 
-Settings
+The one-time migration script was used during migration and should not be kept in the production repository once migration is complete.
 
-Stores:
+🔐 Security Notes
 
-Budget configuration
+Keep DATABASE_URL private.
 
-The database is automatically initialized when the Flask application starts.
+Never commit database passwords or connection strings to GitHub.
 
-🧠 Smart Analysis
+Rotate database credentials if they are accidentally exposed.
 
-The application provides rule-based spending analysis.
+Use environment variables for production database credentials.
 
-For example, if a particular category represents a large percentage of total spending, the application can recommend reviewing spending in that category.
+🧪 Testing Checklist
 
-It can also identify unusually large expenses compared with the user's average expense amount.
+Before final submission, verify:
 
-Future versions will expand these capabilities using more advanced analytics and AI techniques.
+Add expense works
 
-🎯 Project Objectives
+Edit expense works
 
-The main objectives of this project are:
+Delete expense works
 
-To develop a simple expense management system.
+Search works
 
-To provide users with an easy way to track daily spending.
+Category filter works
 
-To implement budget monitoring.
+Budget update works
 
-To analyze spending patterns.
+Remaining budget is calculated correctly
 
-To provide intelligent spending insights.
+Monthly analytics work
 
-To demonstrate practical implementation of Flask and SQLite.
+Category chart works
 
-To deploy a real-world web application on the cloud.
+Smart insight appears
 
-🔮 Future Scope
+Spending prediction appears
 
-The project can be further enhanced with:
+Unusual spending detection works
 
-👤 User registration and login
+CSV export works
 
-🔐 Secure authentication
+Light/Dark mode works
 
-🗄️ PostgreSQL database
+Mobile layout works
 
-📊 Interactive charts and graphs
+PostgreSQL data persists after refresh
 
-🤖 Advanced AI-based financial insights
+Render deployment is live
 
-📄 PDF expense reports
+🚀 Future Scope
 
-📧 Email budget alerts
+Possible future improvements include:
 
-📱 Mobile-friendly/PWA support
+User authentication and registration
 
-☁️ Cloud database storage
+Multiple user accounts
 
-📈 Advanced spending prediction
+PostgreSQL-backed user-specific expense data
 
-🌙 Dark mode
+Recurring expenses
 
-🔔 Smart notifications
+Expense reminders
 
-🧪 Testing
+Monthly and yearly reports
 
-The application has been tested for:
+PDF report generation
 
-Expense creation
+More advanced machine-learning-based predictions
 
-Expense editing
+Automatic category suggestions
 
-Expense deletion
+Spending goals
 
-Budget calculation
+Email notifications
 
-Search and filtering
+Progressive Web App (PWA) support
 
-Database initialization
+More detailed financial dashboards
 
-CSV export
+📊 Learning Outcomes
 
-Flask application startup
+This project demonstrates practical knowledge of:
 
-Gunicorn deployment
+Python programming
 
-Render cloud deployment
+Flask web development
+
+CRUD operations
+
+SQL and relational databases
+
+PostgreSQL
+
+HTML/CSS/JavaScript
+
+Chart.js data visualization
+
+Form handling and validation
+
+Environment variables
+
+Git and GitHub
+
+GitHub Desktop
+
+Render deployment
+
+Basic data analysis and rule-based smart features
+
+🎓 Academic Use
+
+This project is suitable as a B.Tech Computer Science and Engineering academic project demonstrating full-stack web development, database integration, deployment, and basic data-driven features.
 
 👨‍💻 Author
 
 Arpit Sharma
 
-B.Tech Computer Science & Engineering
+B.Tech Computer Science and Engineering specialization in DATA SCIENCE and HONS. of Cyber Security
 
 📜 License
 
-This project is developed for educational and academic purposes.
+This project is intended for educational and academic use.
 
-⭐ Acknowledgement
+You may modify and extend the project for learning, demonstration, and academic submission.
 
-This project was developed as part of a B.Tech CSE project to demonstrate practical knowledge of:
+🙏 Acknowledgement
 
-Python
+This project was developed as an educational full-stack web application using open-source technologies including Python, Flask, PostgreSQL, HTML, CSS, JavaScript, Chart.js, GitHub, and Render.
 
-Flask
+⭐ Project Summary
 
-SQLite
-
-Web Development
-
-Database Management
-
-Data Analysis
-
-Cloud Deployment
+Smart Expense Tracker is a Flask-based expense management web application that combines CRUD functionality, budget management, analytics, data visualization, rule-based smart insights, spending prediction, unusual-spending detection, CSV export, PostgreSQL integration, and online deployment into one complete academic project.
