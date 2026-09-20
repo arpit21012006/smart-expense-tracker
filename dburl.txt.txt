@@ -1,0 +1,1 @@
+postgresql://smart_expense_tracker_db:5iq81WX9W7HaJra3dOc3cTvWwduRsAdK@dpg-danuijgae00c73a4fueg-a.oregon-postgres.render.com/smart_expense_db_36zm

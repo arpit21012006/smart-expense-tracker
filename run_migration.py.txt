@@ -1,0 +1,49 @@
+import getpass
+import runpy
+from pathlib import Path
+
+URL_FILE = Path("dburl.txt")
+SCRIPT_FILE = Path("migrate_sqlite_to_postgres.py")
+
+
+def main():
+    if not SCRIPT_FILE.exists():
+        print("ERROR: migrate_sqlite_to_postgres.py was not found.")
+        print("Run this from the Smart Expense Tracker project folder.")
+        return
+
+    if not URL_FILE.exists():
+        print("ERROR: dburl.txt was not found.")
+        print("Create dburl.txt in this folder and paste the NEW External Database URL into it.")
+        return
+
+    database_url = URL_FILE.read_text(encoding="utf-8-sig").strip()
+
+    if not (
+        database_url.startswith("postgresql://")
+        or database_url.startswith("postgres://")
+    ):
+        print("ERROR: dburl.txt does not contain a valid PostgreSQL URL.")
+        print("Do not add quotes or extra text.")
+        return
+
+    if "@" not in database_url or "/" not in database_url:
+        print("ERROR: The PostgreSQL URL appears incomplete.")
+        return
+
+    print("PostgreSQL URL loaded from dburl.txt.")
+    print("Starting migration...")
+    print()
+
+    original_getpass = getpass.getpass
+    getpass.getpass = lambda *args, **kwargs: database_url
+
+    try:
+        runpy.run_path(str(SCRIPT_FILE), run_name="__main__")
+    finally:
+        getpass.getpass = original_getpass
+
+
+if __name__ == "__main__":
+    main()
+
