@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Expense | Smart Expense Tracker</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #eef2ff,
+                #f5f3ff
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 550px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4f46e5;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button,
+        .cancel-btn {
+            flex: 1;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        button {
+            background: #4f46e5;
+            color: white;
+        }
+
+        button:hover {
+            background: #4338ca;
+        }
+
+        .cancel-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .cancel-btn:hover {
+            background: #d1d5db;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>✏️ Edit Expense</h1>
+
+        <p class="subtitle">
+            Update your expense details
+        </p>
+
+        <form
+            action="/update/{{ expense[0] }}"
+            method="POST"
+        >
+
+            <label>Expense Name</label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ expense[1] }}"
+                required
+            >
+
+
+            <label>Amount (₹)</label>
+
+            <input
+                type="number"
+                name="amount"
+                value="{{ expense[2] }}"
+                step="0.01"
+                min="0.01"
+                required
+            >
+
+
+            <label>Category</label>
+
+            <select name="category" required>
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option value="Food"
+                    {% if expense[3] == "Food" %}selected{% endif %}>
+                    Food
+                </option>
+
+                <option value="Travel"
+                    {% if expense[3] == "Travel" %}selected{% endif %}>
+                    Travel
+                </option>
+
+                <option value="Shopping"
+                    {% if expense[3] == "Shopping" %}selected{% endif %}>
+                    Shopping
+                </option>
+
+                <option value="Bills"
+                    {% if expense[3] == "Bills" %}selected{% endif %}>
+                    Bills
+                </option>
+
+                <option value="Entertainment"
+                    {% if expense[3] == "Entertainment" %}selected{% endif %}>
+                    Entertainment
+                </option>
+
+                <option value="Education"
+                    {% if expense[3] == "Education" %}selected{% endif %}>
+                    Education
+                </option>
+
+                <option value="Health"
+                    {% if expense[3] == "Health" %}selected{% endif %}>
+                    Health
+                </option>
+
+                <option value="Other"
+                    {% if expense[3] == "Other" %}selected{% endif %}>
+                    Other
+                </option>
+
+            </select>
+
+
+            <label>Date</label>
+
+            <input
+                type="date"
+                name="expense_date"
+                value="{{ expense[4] }}"
+                required
+            >
+
+
+            <div class="buttons">
+
+                <a href="/" class="cancel-btn">
+                    Cancel
+                </a>
+
+                <button type="submit">
+                    Update Expense
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

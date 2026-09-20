@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Expense Tracker</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+            transition: 0.3s ease;
+        }
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #4f46e5,
+                #7c3aed
+            );
+
+            color: white;
+            padding: 22px 5%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow:
+                0 5px 20px rgba(79,70,229,0.25);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content h1 {
+            font-size: 27px;
+            letter-spacing: 0.3px;
+        }
+
+        .header-content p {
+            margin-top: 6px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .theme-toggle {
+            border: none;
+            padding: 11px 17px;
+
+            border-radius: 10px;
+
+            background: white;
+            color: #111827;
+
+            font-weight: bold;
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 6px 15px rgba(0,0,0,0.15);
+        }
+
+
+        /* ================================
+           CONTAINER
+        ================================= */
+
+        .container {
+            width: 90%;
+            max-width: 1250px;
+
+            margin: 32px auto;
+        }
+
+
+        /* ================================
+           SUMMARY
+        ================================= */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 24px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            border: 1px solid #eef0f5;
+
+            transition: 0.3s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.10);
+        }
+
+        .summary-card h3 {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 9px;
+        }
+
+        .summary-card .value {
+            font-size: 27px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+
+        /* ================================
+           BUDGET
+        ================================= */
+
+        .budget-box {
+            background: #eef2ff;
+
+            padding: 17px 20px;
+
+            border-radius: 13px;
+
+            margin-bottom: 25px;
+
+            border-left: 4px solid #4f46e5;
+
+            color: #374151;
+        }
+
+        .budget-box strong {
+            color: #4f46e5;
+        }
+
+
+        /* ================================
+           INSIGHTS
+        ================================= */
+
+        .insight-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .insight-card {
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            border: 1px solid #eef0f5;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            transition: 0.3s;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .insight-card h3 {
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+
+        .insight-card p {
+            line-height: 1.6;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ================================
+           SECTIONS
+        ================================= */
+
+        .section {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            margin-bottom: 25px;
+
+            border: 1px solid #eef0f5;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            transition: 0.3s;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+
+        /* ================================
+           FORM
+        ================================= */
+
+        .expense-form {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr auto;
+
+            gap: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: white;
+            color: #1f2937;
+
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(99,102,241,0.12);
+        }
+
+        .btn {
+            border: none;
+
+            padding: 13px 20px;
+
+            border-radius: 10px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ================================
+           SEARCH
+        ================================= */
+
+        .search-form {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .search-form input {
+            flex: 1;
+            min-width: 220px;
+        }
+
+
+        /* ================================
+           EXPORT
+        ================================= */
+
+        .export-btn {
+            display: inline-block;
+
+            padding: 12px 18px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+
+        /* ================================
+           CHARTS
+        ================================= */
+
+        .charts-grid {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr;
+
+            gap: 25px;
+        }
+
+        .chart-box {
+            height: 350px;
+            position: relative;
+        }
+
+
+        /* ================================
+           CATEGORY
+        ================================= */
+
+        .category-item {
+            margin-bottom: 20px;
+        }
+
+        .category-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+        }
+
+        .progress {
+            height: 10px;
+
+            background: #e5e7eb;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                #4f46e5,
+                #7c3aed
+            );
+
+            border-radius: 20px;
+        }
+
+
+        /* ================================
+           TABLE
+        ================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+
+            color: #374151;
+
+            font-size: 13px;
+        }
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+        .edit-btn {
+            text-decoration: none;
+
+            color: #4f46e5;
+
+            font-weight: bold;
+
+            margin-right: 12px;
+        }
+
+        .delete-btn {
+            text-decoration: none;
+
+            color: #dc2626;
+
+            font-weight: bold;
+        }
+
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #6b7280;
+
+            font-size: 13px;
+        }
+
+
+        /* ================================
+           DARK MODE
+        ================================= */
+
+        body.dark-mode {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(
+                135deg,
+                #312e81,
+                #4c1d95
+            );
+        }
+
+        body.dark-mode .summary-card,
+        body.dark-mode .section,
+        body.dark-mode .insight-card {
+            background: #1e293b !important;
+
+            color: #f8fafc !important;
+
+            border-color: #334155;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.30);
+        }
+
+        body.dark-mode .summary-card h3 {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode .summary-card .value {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .section h2 {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .insight-card h3 {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .insight-card p {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode .budget-box {
+            background: #1e293b;
+
+            color: #e2e8f0;
+
+            border-left-color: #818cf8;
+        }
+
+        body.dark-mode .budget-box strong {
+            color: #a5b4fc;
+        }
+
+        body.dark-mode input,
+        body.dark-mode select {
+            background: #334155;
+
+            color: #f8fafc;
+
+            border-color: #475569;
+        }
+
+        body.dark-mode input::placeholder {
+            color: #94a3b8;
+        }
+
+        body.dark-mode option {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        body.dark-mode th {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        body.dark-mode td {
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+
+        body.dark-mode tr:hover td {
+            background: #263449;
+        }
+
+        body.dark-mode .progress {
+            background: #334155;
+        }
+
+        body.dark-mode footer {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .edit-btn {
+            color: #a5b4fc;
+        }
+
+        body.dark-mode .delete-btn {
+            color: #f87171;
+        }
+
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 900px) {
+
+            .summary-grid,
+            .insight-grid,
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+                margin-top: 22px;
+            }
+
+            header {
+                padding: 20px 4%;
+            }
+
+            .header-content h1 {
+                font-size: 22px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .summary-card {
+                padding: 20px;
+            }
+
+            .summary-card .value {
+                font-size: 23px;
+            }
+
+            .theme-toggle {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+<style>
+
+/* =========================================
+   FINAL PROFESSIONAL POLISH
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+header {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 28px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+header p {
+    margin: 5px 0 0;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+body > div,
+main {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section {
+    background: white;
+    margin: 22px auto;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(15,23,42,0.07);
+    border: 1px solid #e5e7eb;
+}
+
+.section h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 20px;
+    color: #1e293b;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.cards,
+.summary-cards,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 24px auto;
+    max-width: 1200px;
+}
+
+.card,
+.summary-card,
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 18px rgba(15,23,42,0.06);
+    transition: 0.25s ease;
+}
+
+.card:hover,
+.summary-card:hover,
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(15,23,42,0.10);
+}
+
+.card h3,
+.summary-card h3,
+.stat-card h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.card strong,
+.summary-card strong,
+.stat-card strong {
+    font-size: 27px;
+    color: #111827;
+}
+
+
+/* =========================================
+   FORMS
+========================================= */
+
+form {
+    width: 100%;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: white;
+    color: #1f2937;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button,
+.btn,
+.export-btn,
+.edit-btn,
+.delete-btn {
+    display: inline-block;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 17px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+button,
+.btn,
+.export-btn {
+    background: #2563eb;
+    color: white;
+}
+
+button:hover,
+.btn:hover,
+.export-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.edit-btn {
+    background: #eff6ff;
+    color: #2563eb;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background: #dbeafe;
+}
+
+.delete-btn {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+}
+
+
+/* =========================================
+   SEARCH FORM
+========================================= */
+
+.search-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+}
+
+
+/* =========================================
+   CHARTS
+========================================= */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.chart-box {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+.chart-box canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* =========================================
+   CATEGORY PROGRESS
+========================================= */
+
+.category-item {
+    margin-bottom: 20px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    border-radius: 20px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    text-align: left;
+    padding: 14px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 14px;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   INSIGHT / PREDICTION / BUDGET
+========================================= */
+
+.insight-box {
+    border-left: 5px solid #8b5cf6;
+}
+
+.prediction-box {
+    border-left: 5px solid #2563eb;
+}
+
+.budget-status {
+    border-left: 5px solid #10b981;
+}
+
+.insight-box p,
+.prediction-box p,
+.budget-status p {
+    color: #475569;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer {
+    text-align: center;
+    padding: 35px 20px;
+    margin-top: 30px;
+    color: #64748b;
+}
+
+footer p {
+    margin: 0 0 5px;
+    font-weight: 600;
+}
+
+footer small {
+    font-size: 12px;
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+body.dark-mode {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+body.dark-mode .section,
+body.dark-mode .card,
+body.dark-mode .summary-card,
+body.dark-mode .stat-card {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
+body.dark-mode .section h2,
+body.dark-mode .card strong,
+body.dark-mode .summary-card strong,
+body.dark-mode .stat-card strong {
+    color: #f8fafc;
+}
+
+body.dark-mode .card h3,
+body.dark-mode .summary-card h3,
+body.dark-mode .stat-card h3 {
+    color: #94a3b8;
+}
+
+body.dark-mode input,
+body.dark-mode select {
+    background: #0f172a;
+    color: #e5e7eb;
+    border-color: #475569;
+}
+
+body.dark-mode th {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-color: #334155;
+}
+
+body.dark-mode td {
+    border-color: #334155;
+}
+
+body.dark-mode tr:hover td {
+    background: #273449;
+}
+
+body.dark-mode .progress {
+    background: #334155;
+}
+
+body.dark-mode .insight-box p,
+body.dark-mode .prediction-box p,
+body.dark-mode .budget-status p {
+    color: #cbd5e1;
+}
+
+body.dark-mode footer {
+    color: #94a3b8;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 900px) {
+
+    .cards,
+    .summary-cards,
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 22px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .section {
+        margin: 15px 10px;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .chart-box {
+        height: 260px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        margin-top: 5px;
+    }
+}
+
+</style>
+<style>
+
+/* =========================================
+   FINAL PROFESSIONAL POLISH
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+header {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 28px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+header p {
+    margin: 5px 0 0;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+body > div,
+main {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section {
+    background: white;
+    margin: 22px auto;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(15,23,42,0.07);
+    border: 1px solid #e5e7eb;
+}
+
+.section h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 20px;
+    color: #1e293b;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.cards,
+.summary-cards,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 24px auto;
+    max-width: 1200px;
+}
+
+.card,
+.summary-card,
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 18px rgba(15,23,42,0.06);
+    transition: 0.25s ease;
+}
+
+.card:hover,
+.summary-card:hover,
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(15,23,42,0.10);
+}
+
+.card h3,
+.summary-card h3,
+.stat-card h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.card strong,
+.summary-card strong,
+.stat-card strong {
+    font-size: 27px;
+    color: #111827;
+}
+
+
+/* =========================================
+   FORMS
+========================================= */
+
+form {
+    width: 100%;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: white;
+    color: #1f2937;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button,
+.btn,
+.export-btn,
+.edit-btn,
+.delete-btn {
+    display: inline-block;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 17px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+button,
+.btn,
+.export-btn {
+    background: #2563eb;
+    color: white;
+}
+
+button:hover,
+.btn:hover,
+.export-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.edit-btn {
+    background: #eff6ff;
+    color: #2563eb;
+    margin-right: 5px;
+}
+
+.edit-btn:hover {
+    background: #dbeafe;
+}
+
+.delete-btn {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+}
+
+
+/* =========================================
+   SEARCH FORM
+========================================= */
+
+.search-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+}
+
+
+/* =========================================
+   CHARTS
+========================================= */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.chart-box {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+.chart-box canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* =========================================
+   CATEGORY PROGRESS
+========================================= */
+
+.category-item {
+    margin-bottom: 20px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    border-radius: 20px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    text-align: left;
+    padding: 14px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 14px;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   INSIGHT / PREDICTION / BUDGET
+========================================= */
+
+.insight-box {
+    border-left: 5px solid #8b5cf6;
+}
+
+.prediction-box {
+    border-left: 5px solid #2563eb;
+}
+
+.budget-status {
+    border-left: 5px solid #10b981;
+}
+
+.insight-box p,
+.prediction-box p,
+.budget-status p {
+    color: #475569;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer {
+    text-align: center;
+    padding: 35px 20px;
+    margin-top: 30px;
+    color: #64748b;
+}
+
+footer p {
+    margin: 0 0 5px;
+    font-weight: 600;
+}
+
+footer small {
+    font-size: 12px;
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+body.dark-mode {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+body.dark-mode .section,
+body.dark-mode .card,
+body.dark-mode .summary-card,
+body.dark-mode .stat-card {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
+body.dark-mode .section h2,
+body.dark-mode .card strong,
+body.dark-mode .summary-card strong,
+body.dark-mode .stat-card strong {
+    color: #f8fafc;
+}
+
+body.dark-mode .card h3,
+body.dark-mode .summary-card h3,
+body.dark-mode .stat-card h3 {
+    color: #94a3b8;
+}
+
+body.dark-mode input,
+body.dark-mode select {
+    background: #0f172a;
+    color: #e5e7eb;
+    border-color: #475569;
+}
+
+body.dark-mode th {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-color: #334155;
+}
+
+body.dark-mode td {
+    border-color: #334155;
+}
+
+body.dark-mode tr:hover td {
+    background: #273449;
+}
+
+body.dark-mode .progress {
+    background: #334155;
+}
+
+body.dark-mode .insight-box p,
+body.dark-mode .prediction-box p,
+body.dark-mode .budget-status p {
+    color: #cbd5e1;
+}
+
+body.dark-mode footer {
+    color: #94a3b8;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 900px) {
+
+    .cards,
+    .summary-cards,
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 22px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .section {
+        margin: 15px 10px;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .chart-box {
+        height: 260px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        margin-top: 5px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header>
+
+    <div class="header-content">
+
+        <h1>
+            💰 Smart Expense Tracker
+        </h1>
+
+        <p>
+            Track, analyze and manage your expenses smartly.
+        </p>
+
+    </div>
+
+
+    <button
+        id="themeToggle"
+        class="theme-toggle"
+        type="button"
+    >
+        🌙 Dark Mode
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =========================================
+     SUMMARY
+========================================= -->
+
+<div class="summary-grid">
+
+    <div class="summary-card">
+
+        <h3>
+            💰 Total Expenses
+        </h3>
+
+        <div class="value">
+            ₹{{ "%.2f"|format(total) }}
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <h3>
+            📅 This Month
+        </h3>
+
+        <div class="value">
+            ₹{{ "%.2f"|format(monthly_total) }}
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <h3>
+            💳 Remaining Budget
+        </h3>
+
+        <div class="value">
+            ₹{{ "%.2f"|format(remaining) }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     BUDGET
+========================================= -->
+
+<div class="budget-box">
+
+    <strong>Budget:</strong>
+
+    ₹{{ "%.2f"|format(budget) }}
+
+    &nbsp; | &nbsp;
+
+    <strong>Status:</strong>
+
+    {{ budget_status }}
+
+</div>
+
+
+<!-- =========================================
+     INSIGHTS
+========================================= -->
+
+<div class="insight-grid">
+
+    <div class="insight-card">
+
+        <h3>
+            🧠 Smart Spending Insight
+        </h3>
+
+        <p>
+            {{ smart_insight }}
+        </p>
+
+    </div>
+
+
+    <div class="insight-card">
+
+        <h3>
+            📈 Spending Prediction
+        </h3>
+
+        <p>
+            {{ prediction_message }}
+        </p>
+
+    </div>
+
+
+    <div class="insight-card">
+
+        <h3>
+            ⚠️ Unusual Spending
+        </h3>
+
+        <p>
+            {{ unusual_message }}
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     ADD EXPENSE
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        ➕ Add New Expense
+    </h2>
+
+    <form
+        action="/add"
+        method="POST"
+        class="expense-form"
+    >
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Expense name"
+            required
+        >
+
+        <input
+            type="number"
+            name="amount"
+            placeholder="Amount"
+            step="0.01"
+            min="0.01"
+            required
+        >
+
+        <select
+            name="category"
+            required
+        >
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option value="Food">
+                Food
+            </option>
+
+            <option value="Travel">
+                Travel
+            </option>
+
+            <option value="Shopping">
+                Shopping
+            </option>
+
+            <option value="Bills">
+                Bills
+            </option>
+
+            <option value="Entertainment">
+                Entertainment
+            </option>
+
+            <option value="Education">
+                Education
+            </option>
+
+            <option value="Health">
+                Health
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Add Expense
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- =========================================
+     SEARCH & FILTER
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        🔎 Search & Filter
+    </h2>
+
+    <form
+        action="/"
+        method="GET"
+        class="search-form"
+    >
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search expense..."
+        >
+
+
+        <select name="category">
+
+            <option value="">
+                All Categories
+            </option>
+
+            <option value="Food"
+                {% if category_filter == "Food" %}selected{% endif %}>
+                Food
+            </option>
+
+            <option value="Travel"
+                {% if category_filter == "Travel" %}selected{% endif %}>
+                Travel
+            </option>
+
+            <option value="Shopping"
+                {% if category_filter == "Shopping" %}selected{% endif %}>
+                Shopping
+            </option>
+
+            <option value="Bills"
+                {% if category_filter == "Bills" %}selected{% endif %}>
+                Bills
+            </option>
+
+            <option value="Entertainment"
+                {% if category_filter == "Entertainment" %}selected{% endif %}>
+                Entertainment
+            </option>
+
+            <option value="Education"
+                {% if category_filter == "Education" %}selected{% endif %}>
+                Education
+            </option>
+
+            <option value="Health"
+                {% if category_filter == "Health" %}selected{% endif %}>
+                Health
+            </option>
+
+            <option value="Other"
+                {% if category_filter == "Other" %}selected{% endif %}>
+                Other
+            </option>
+
+        </select>
+
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Search
+        </button>
+
+
+        <a
+            href="/"
+            class="btn"
+            style="text-decoration:none;"
+        >
+            Reset
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- =========================================
+     EXPORT
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        📥 Export Data
+    </h2>
+
+    <a
+        href="/export"
+        class="export-btn"
+    >
+        Download Expense CSV
+    </a>
+
+</div>
+
+
+<!-- =========================================
+     MONTHLY ANALYTICS
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        📊 Monthly Expense Analytics
+    </h2>
+
+    <div class="chart-box">
+
+        <canvas id="monthlyChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     CHARTS
+========================================= -->
+
+<div class="charts-grid">
+
+
+    <div class="section">
+
+        <h2>
+            📈 Monthly Spending
+        </h2>
+
+        <div class="chart-box">
+
+            <canvas id="monthlyChart2"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>
+            🍩 Expense Distribution
+        </h2>
+
+        <div class="chart-box">
+
+            <canvas id="categoryChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     CATEGORY-WISE EXPENSES
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        📂 Category-wise Expenses
+    </h2>
+
+
+    {% if category_totals %}
+
+        {% for category in category_totals %}
+
+            <div class="category-item">
+
+                <div class="category-header">
+
+                    <span>
+                        {{ category[0] }}
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(category[1]) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="
+                            width:
+                            {{ (category[1] / total * 100)
+                               if total > 0 else 0 }}%;
+                        "
+                    ></div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No category data available.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================
+     UNUSUAL EXPENSES
+========================================= -->
+
+{% if unusual_expenses %}
+
+<div class="section">
+
+    <h2>
+        ⚠️ High / Unusual Expenses
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for expense in unusual_expenses %}
+
+                <tr>
+
+                    <td>
+                        {{ expense.name }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(expense.amount) }}
+                    </td>
+
+                    <td>
+                        {{ expense.category }}
+                    </td>
+
+                    <td>
+                        {{ expense.date }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- =========================================
+     RECENT EXPENSES
+========================================= -->
+
+<div class="section">
+
+    <h2>
+        🧾 Recent Expenses
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% if expenses %}
+
+                    {% for expense in expenses %}
+
+                    <tr>
+
+                        <td>
+                            {{ expense[1] }}
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f"|format(expense[2]) }}
+                        </td>
+
+                        <td>
+                            {{ expense[3] }}
+                        </td>
+
+                        <td>
+                            {{ expense[4] }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="/edit/{{ expense[0] }}"
+                                class="edit-btn"
+                            >
+                                ✏️ Edit
+                            </a>
+
+
+                            <a
+                                href="/delete/{{ expense[0] }}"
+                                class="delete-btn"
+                                onclick="
+                                    return confirm(
+                                        'Are you sure you want to delete this expense?'
+                                    );
+                                "
+                            >
+                                🗑️ Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="text-align:center;"
+                        >
+                            No expenses found.
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     SMART INSIGHT
+========================================= -->
+
+<div class="section insight-box">
+
+    <h2>
+        💡 Smart Spending Insight
+    </h2>
+
+    <p>
+        {{ smart_insight }}
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     SPENDING PREDICTION
+========================================= -->
+
+<div class="section prediction-box">
+
+    <h2>
+        📈 Spending Prediction
+    </h2>
+
+    <p>
+        {{ prediction_message }}
+    </p>
+
+    {% if predicted_expense > 0 %}
+
+        <h3>
+            Estimated Expense:
+            ₹{{ "%.2f"|format(predicted_expense) }}
+        </h3>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================
+     BUDGET STATUS
+========================================= -->
+
+<div class="section budget-status">
+
+    <h2>
+        💰 Budget Status
+    </h2>
+
+    <p>
+        {{ budget_status }}
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <p>
+        Smart Expense Tracker
+    </p>
+
+    <small>
+        Built with Flask • SQLite • HTML • CSS • JavaScript
+    </small>
+
+</footer>
+
+
+<!-- =========================================
+     CHART.JS
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    /* ========================================
+       CATEGORY CHART
+    ======================================== */
+
+    const categoryLabels = [
+        {% for category in category_totals %}
+            "{{ category[0] }}",
+        {% endfor %}
+    ];
+
+
+    const categoryValues = [
+        {% for category in category_totals %}
+            {{ category[1] }},
+        {% endfor %}
+    ];
+
+
+    const categoryCanvas =
+        document.getElementById("categoryChart");
+
+
+    if (categoryCanvas) {
+
+        new Chart(categoryCanvas, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: categoryLabels,
+
+                datasets: [{
+
+                    data: categoryValues
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom"
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+
+    /* ========================================
+       MONTHLY CHART
+    ======================================== */
+
+    const monthlyLabels = [
+
+        {% for month in monthly_totals %}
+
+            "{{ month[0] }}",
+
+        {% endfor %}
+
+    ];
+
+
+    const monthlyValues = [
+
+        {% for month in monthly_totals %}
+
+            {{ month[1] }},
+
+        {% endfor %}
+
+    ];
+
+
+    const monthlyCanvas =
+        document.getElementById("monthlyChart");
+
+
+    if (monthlyCanvas) {
+
+        new Chart(monthlyCanvas, {
+
+            type: "line",
+
+            data: {
+
+                labels: monthlyLabels,
+
+                datasets: [{
+
+                    label: "Monthly Expenses",
+
+                    data: monthlyValues,
+
+                    tension: 0.3
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+
+    /* ========================================
+       SECOND MONTHLY CHART
+    ======================================== */
+
+    const monthlyCanvas2 =
+        document.getElementById("monthlyChart2");
+
+
+    if (monthlyCanvas2) {
+
+        new Chart(monthlyCanvas2, {
+
+            type: "bar",
+
+            data: {
+
+                labels: monthlyLabels,
+
+                datasets: [{
+
+                    label: "Expenses",
+
+                    data: monthlyValues
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+
+    /* ========================================
+       DARK / LIGHT MODE
+    ======================================== */
+
+    const themeButton =
+        document.getElementById("themeToggle");
+
+
+    if (themeButton) {
+
+        themeButton.addEventListener(
+            "click",
+            function () {
+
+                document.body.classList.toggle(
+                    "dark-mode"
+                );
+
+
+                if (
+                    document.body.classList.contains(
+                        "dark-mode"
+                    )
+                ) {
+
+                    localStorage.setItem(
+                        "theme",
+                        "dark"
+                    );
+
+                    themeButton.innerHTML =
+                        "☀️ Light Mode";
+
+                }
+
+                else {
+
+                    localStorage.setItem(
+                        "theme",
+                        "light"
+                    );
+
+                    themeButton.innerHTML =
+                        "🌙 Dark Mode";
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* ========================================
+       REMEMBER THEME
+    ======================================== */
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+
+        if (themeButton) {
+
+            themeButton.innerHTML =
+                "☀️ Light Mode";
+
+        }
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Error | Smart Expense Tracker</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,
+                    #eef2ff,
+                    #f5f3ff);
+        }
+
+        .error-card {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fee2e2;
+            font-size: 40px;
+        }
+
+        h1 {
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .message {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #4f46e5;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        .brand {
+            margin-top: 25px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="error-card">
+
+        <div class="icon">
+            ⚠️
+        </div>
+
+        <h1>Something went wrong</h1>
+
+        <div class="message">
+            {{ error_message }}
+        </div>
+
+        <a href="/" class="back-btn">
+            ← Back to Dashboard
+        </a>
+
+        <div class="brand">
+            Smart Expense Tracker
+        </div>
+
+    </div>
+    
+
+        
+</body>
+
+</html>
